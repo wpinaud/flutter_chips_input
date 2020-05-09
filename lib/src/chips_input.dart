@@ -8,7 +8,7 @@ typedef ChipsInputSuggestions<T> = FutureOr<List<T>> Function(String query);
 typedef ChipSelected<T> = void Function(T data, bool selected);
 typedef ChipsBuilder<T> = Widget Function(
     BuildContext context, ChipsInputState<T> state, T data);
-typedef ChipsInputAction = void Function(TextInputAction action, String query, ChipsInputState<T> state);
+typedef ChipsInputAction<T> = void Function(TextInputAction action, String query, ChipsInputState<T> state);
 
 class ChipsInput<T> extends StatefulWidget {
   ChipsInput({
