@@ -8,7 +8,7 @@ typedef ChipsInputSuggestions<T> = FutureOr<List<T>> Function(String query);
 typedef ChipSelected<T> = void Function(T data, bool selected);
 typedef ChipsBuilder<T> = Widget Function(
     BuildContext context, ChipsInputState<T> state, T data);
-typedef ChipsInputAction = void Function(TextInputAction action);
+typedef ChipsInputAction = void Function(TextInputAction action, String query, ChipsInputState<T> state);
 
 class ChipsInput<T> extends StatefulWidget {
   ChipsInput({
@@ -370,7 +370,7 @@ class ChipsInputState<T> extends State<ChipsInput<T>>
   void performAction(TextInputAction action) {
     if (widget.closeKeyboardOnReturn) _focusNode.unfocus();
     if (widget.onKeyboardAction != null)
-      widget.onKeyboardAction(action);
+      widget.onKeyboardAction(action, _value, this);
   }
 
   void _updateTextInputState() {
