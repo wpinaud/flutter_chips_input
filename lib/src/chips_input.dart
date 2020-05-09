@@ -370,7 +370,7 @@ class ChipsInputState<T> extends State<ChipsInput<T>>
   void performAction(TextInputAction action) {
     if (widget.closeKeyboardOnReturn) _focusNode.unfocus();
     if (widget.onKeyboardAction != null)
-      widget.onKeyboardAction(action, _value.text, this);
+      widget.onKeyboardAction(action, text, this);
   }
 
   void _updateTextInputState() {
