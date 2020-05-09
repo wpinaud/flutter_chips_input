@@ -8,6 +8,7 @@ typedef ChipsInputSuggestions<T> = FutureOr<List<T>> Function(String query);
 typedef ChipSelected<T> = void Function(T data, bool selected);
 typedef ChipsBuilder<T> = Widget Function(
     BuildContext context, ChipsInputState<T> state, T data);
+typedef ChipsInputAction = void Function(TextInputAction action);
 
 class ChipsInput<T> extends StatefulWidget {
   ChipsInput({
@@ -19,6 +20,7 @@ class ChipsInput<T> extends StatefulWidget {
     @required this.suggestionBuilder,
     @required this.findSuggestions,
     @required this.onChanged,
+    this.onKeyboardAction,
     this.onChipTapped,
     this.maxChips,
     this.textStyle,
@@ -29,6 +31,7 @@ class ChipsInput<T> extends StatefulWidget {
     this.autocorrect = true,
     this.actionLabel,
     this.inputAction = TextInputAction.done,
+    this.closeKeyboardOnReturn = true,
     this.keyboardAppearance = Brightness.light,
     this.textCapitalization = TextCapitalization.none,
   })  : assert(maxChips == null || initialValue.length <= maxChips),
@@ -43,6 +46,7 @@ class ChipsInput<T> extends StatefulWidget {
   final ValueChanged<T> onChipTapped;
   final ChipsBuilder<T> chipBuilder;
   final ChipsBuilder<T> suggestionBuilder;
+  final ChipsInputAction onKeyboardAction;
   final List<T> initialValue;
   final int maxChips;
   final double suggestionsBoxMaxHeight;
@@ -52,6 +56,7 @@ class ChipsInput<T> extends StatefulWidget {
   final bool autocorrect;
   final String actionLabel;
   final TextInputAction inputAction;
+  final bool closeKeyboardOnReturn;
   final Brightness keyboardAppearance;
 
   // final Color cursorColor;
@@ -363,7 +368,9 @@ class ChipsInputState<T> extends State<ChipsInput<T>>
 
   @override
   void performAction(TextInputAction action) {
-    _focusNode.unfocus();
+    if (widget.closeKeyboardOnReturn) _focusNode.unfocus();
+    if (widget.onKeyboardAction != null)
+      widget.onKeyboardAction(action);
   }
 
   void _updateTextInputState() {
